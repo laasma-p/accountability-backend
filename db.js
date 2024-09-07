@@ -10,4 +10,13 @@ const sequelize = new Sequelize(
   }
 );
 
+sequelize
+  .sync({ alter: true })
+  .then(() => {
+    console.log("Database has been synced.");
+  })
+  .catch((error) => {
+    console.error("Failed to sync the database", error);
+  });
+
 module.exports = sequelize;
