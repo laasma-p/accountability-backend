@@ -20,4 +20,16 @@ router.post("/habits", authenticateJWT, async (req, res) => {
   }
 });
 
+router.get("/habits", authenticateJWT, async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const habits = await Habit.findAll({ where: { userId } });
+    res.json(habits);
+  } catch (error) {
+    console.error("Error fetching habitS:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;
