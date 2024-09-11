@@ -32,4 +32,22 @@ router.get("/habits", authenticateJWT, async (req, res) => {
   }
 });
 
+router.delete("/habits/:id", authenticateJWT, async (req, res) => {
+  const habitId = req.params.id;
+  const userId = req.user.id;
+
+  try {
+    const habit = await Habit.findOne({ where: { id: habitId, userId } });
+    if (!habit) {
+      return res.status(404).json({ error: "Habit not found." });
+    }
+
+    await habit.destroy();
+    res.status(200).json({ message: "Habit deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting the habit:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;
