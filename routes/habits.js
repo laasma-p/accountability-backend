@@ -72,4 +72,23 @@ router.post("/habits/:id/track", authenticateJWT, async (req, res) => {
   }
 });
 
+router.get("/habits/date/:date", authenticateJWT, async (req, res) => {
+  const { date } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const habits = await Habit.findAll({
+      where: {
+        userId,
+        startDate: date,
+      },
+    });
+
+    res.json(habits);
+  } catch (error) {
+    console.error("Error fetching habits by date:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;
