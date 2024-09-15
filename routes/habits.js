@@ -50,4 +50,26 @@ router.delete("/habits/:id", authenticateJWT, async (req, res) => {
   }
 });
 
+router.post("/habits/:id/track", authenticateJWT, async (req, res) => {
+  const habitId = req.params.id;
+  const userId = req.user.id;
+
+  try {
+    const habit = await Habit.findOne({ where: { id: habitId, userId } });
+
+    if (!habit) {
+      return res.status(404).json({ error: "Habit not found." });
+    }
+
+    habit.isTracking = true;
+    habit.startDate = new Date();
+    await habit.save();
+
+    res.status(200).json(habit);
+  } catch (error) {
+    console.error("Error tracking a habit:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;
