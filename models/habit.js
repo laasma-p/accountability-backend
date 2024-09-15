@@ -19,7 +19,7 @@ const Habit = sequelize.define("habit", {
     defaultValue: false,
   },
   startDate: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: true,
   },
 });
