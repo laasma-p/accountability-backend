@@ -14,6 +14,14 @@ const Habit = sequelize.define("habit", {
       key: "id",
     },
   },
+  isTracking: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  startDate: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },
 });
 
 Habit.belongsTo(User, { foreignKey: "userId" });
